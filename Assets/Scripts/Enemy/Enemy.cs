@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -231,6 +232,11 @@ public class Enemy : MonoBehaviour
         }
 
         Destroy(gameObject, destroyDelay);
+
+        if(bossComponent != null)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void HandleGroans()

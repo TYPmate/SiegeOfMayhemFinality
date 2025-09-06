@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles door opening functionality without requiring a key
+/// </summary>
 public class NoKeyDoorOpener : MonoBehaviour
 {
     public Transform door;
@@ -13,12 +16,18 @@ public class NoKeyDoorOpener : MonoBehaviour
 
     public AudioSource doorSound;
 
+    /// <summary>
+    /// Initializes door rotation values
+    /// </summary>
     void Start()
     {
         initialRotation = door.rotation;
         targetRotation = Quaternion.Euler(openRotation) * initialRotation;
     }
 
+    /// <summary>
+    /// Updates door rotation if opening sequence is active
+    /// </summary>
     void Update()
     {
         if (isOpening)
@@ -27,6 +36,10 @@ public class NoKeyDoorOpener : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles trigger entry to detect player and initiate door opening
+    /// </summary>
+    /// <param name="other">The collider entering the trigger zone</param>
     void OnTriggerEnter(Collider other)
     {
         PlayerMotor playerMotor = other.GetComponent<PlayerMotor>();

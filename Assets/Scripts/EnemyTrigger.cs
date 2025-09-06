@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Handles enemy spawning when player enters trigger zone
+/// </summary>
 public class EnemyTrigger : MonoBehaviour
 {
     public GameObject enemyPrefab;
@@ -8,6 +11,10 @@ public class EnemyTrigger : MonoBehaviour
 
     private bool hasSpawned = false;
 
+    /// <summary>
+    /// Handles trigger entry to detect player and spawn enemies
+    /// </summary>
+    /// <param name="other">The collider entering the trigger zone</param>
     void OnTriggerEnter(Collider other)
     {
         if (!hasSpawned && other.CompareTag("Player"))

@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Controls ranged enemy behavior including shooting, movement, and color customization
+/// </summary>
 public class RangedEnemy : MonoBehaviour
 {
     public Transform player;
@@ -70,6 +73,9 @@ public class RangedEnemy : MonoBehaviour
         nextGroanTime = Random.Range(5f, 15f);
     }
 
+    /// <summary>
+    /// Darkens the enemy's material color by specified intensity
+    /// </summary>
     private void DarkenEnemyColor(float intensity)
     {
         if (enemyRenderer == null) return;
@@ -84,6 +90,9 @@ public class RangedEnemy : MonoBehaviour
         enemyRenderer.material.color = darkenedColor;
     }
 
+    /// <summary>
+    /// Editor validation for color preview
+    /// </summary>
     private void OnValidate()
     {
         if (enemyRenderer != null && !Application.isPlaying)
@@ -121,6 +130,9 @@ public class RangedEnemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles taking damage from player attacks
+    /// </summary>
     public void TakeDamage(int damage, bool knockback)
     {
         currentHealth -= damage;
@@ -137,6 +149,9 @@ public class RangedEnemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles enemy death sequence
+    /// </summary>
     private void Die()
     {
         currentState = EnemyState.Dead;
@@ -153,6 +168,9 @@ public class RangedEnemy : MonoBehaviour
         Destroy(gameObject, destroyDelay);
     }
 
+    /// <summary>
+    /// Handles periodic groan sound playback
+    /// </summary>
     private void HandleGroans()
     {
         groanTimer += Time.deltaTime;
@@ -164,6 +182,9 @@ public class RangedEnemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles pathfinding and movement logic
+    /// </summary>
     private void HandlePathing(float distance)
     {
         if (distance <= attackRange && distance >= minDistance)
@@ -188,6 +209,9 @@ public class RangedEnemy : MonoBehaviour
         SetAnimationTrigger("trWalk");
     }
 
+    /// <summary>
+    /// Sets animation trigger with proper reset handling
+    /// </summary>
     private void SetAnimationTrigger(string triggerName)
     {
         if (currentAnimTrigger == triggerName) return;
@@ -198,6 +222,9 @@ public class RangedEnemy : MonoBehaviour
         playerAnimator?.PlayAnimation(triggerName);
     }
 
+    /// <summary>
+    /// Handles shooting behavior when in attack range
+    /// </summary>
     private void HandleShooting(float distance)
     {
         if (distance > attackRange || distance < minDistance)

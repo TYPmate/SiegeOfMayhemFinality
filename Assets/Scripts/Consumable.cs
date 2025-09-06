@@ -13,9 +13,10 @@ public class Consumable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // You can put other update logic here
     }
 
+
+    //On collision heal player
     private void OnTriggerEnter(Collider other)
     {
         PlayerMotor player = other.GetComponent<PlayerMotor>();

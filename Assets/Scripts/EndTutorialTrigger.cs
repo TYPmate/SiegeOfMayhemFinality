@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles tutorial end trigger functionality including door opening sequence
+/// </summary>
 public class EndTutorialTrigger : MonoBehaviour
 {
     public Transform door;
@@ -15,12 +18,18 @@ public class EndTutorialTrigger : MonoBehaviour
 
     public AudioSource doorSound;
 
+    /// <summary>
+    /// Initializes door rotation values
+    /// </summary>
     void Start()
     {
         initialRotation = door.rotation;
         targetRotation = Quaternion.Euler(openRotation) * initialRotation;
     }
 
+    /// <summary>
+    /// Updates door rotation if opening sequence is active
+    /// </summary>
     void Update()
     {
         if (isOpening)
@@ -29,6 +38,10 @@ public class EndTutorialTrigger : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles trigger entry to detect player and initiate door opening
+    /// </summary>
+    /// <param name="other">The collider entering the trigger zone</param>
     void OnTriggerEnter(Collider other)
     {
         PlayerMotor playerMotor = other.GetComponent<PlayerMotor>();

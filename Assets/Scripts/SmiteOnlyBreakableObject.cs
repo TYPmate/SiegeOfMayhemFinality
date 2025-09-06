@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/// <summary>
+/// Handles breakable object that can only be destroyed by Smite ammo type
+/// </summary>
 public class SmiteOnlyBreakableObject : MonoBehaviour
 {
     [SerializeField] private GameObject fracturedModel;
@@ -20,6 +23,9 @@ public class SmiteOnlyBreakableObject : MonoBehaviour
     private bool isBroken = false;
     private Arquebus playerArquebus;
 
+    /// <summary>
+    /// Initializes reference to player's arquebus weapon
+    /// </summary>
     private void Awake()
     {
         playerArquebus = FindObjectOfType<Arquebus>();
@@ -27,6 +33,10 @@ public class SmiteOnlyBreakableObject : MonoBehaviour
             Debug.LogWarning("No Arquebus component found in scene; this object will never break.");
     }
 
+    /// <summary>
+    /// Breaks the object only if hit by Smite ammo type
+    /// </summary>
+    /// <param name="impactPoint">The point where the break impact occurred</param>
     public void Break(Vector3 impactPoint)
     {
         if (isBroken) return;

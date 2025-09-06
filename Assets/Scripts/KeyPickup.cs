@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles key pickup functionality including visual effects and player interaction
+/// </summary>
 public class KeyPickup : MonoBehaviour
 {
     public float rotationSpeed = 50f;
@@ -10,11 +13,17 @@ public class KeyPickup : MonoBehaviour
 
     public AudioClip pickupSound;
 
+    /// <summary>
+    /// Initializes the starting position for floating animation
+    /// </summary>
     void Start()
     {
         startPos = transform.position;
     }
 
+    /// <summary>
+    /// Updates key rotation and floating animation
+    /// </summary>
     void Update()
     {
         // Rotate the key
@@ -25,12 +34,16 @@ public class KeyPickup : MonoBehaviour
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 
+    /// <summary>
+    /// Handles trigger entry to detect player and grant key possession
+    /// </summary>
+    /// <param name="other">The collider entering the trigger zone</param>
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             PlayerMotor playerMotor = other.GetComponent<PlayerMotor>();
-            if(playerMotor != null)
+            if (playerMotor != null)
             {
                 playerMotor.hasKey = true;
             }

@@ -3,42 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Controls ranged enemy movement, shooting behavior, and combat states
+/// </summary>
 public class RangedEnemyMoving : MonoBehaviour
 {
+    // References and components
     public Transform player;
     private NavMeshAgent agent;
     public GameObject ragdoll;
     public Animator animator;
+    private PlayerAnimator playerAnimator;
+    private Gun currentGun;
+
+    // Stats and configuration
     public float currentHealth = 25, maxHealth = 25;
-    private enum EnemyState
-    {
-        Pathing,
-        Attacking,
-        Dead
-    }
-
-    private EnemyState currentState = EnemyState.Pathing;
-    private bool attackToggle = false;
-
     public float attackDuration = 2.6f;
     private float attackCooldown = 1.4f;
+    public float destroyDelay = 2f;
+    public float attackRange = 10f;  // Distance to stop and shoot
+    public float minDistance = 5f;   // Minimum distance to maintain
 
-    public GameObject dropItemPrefab;
-    private PlayerAnimator playerAnimator;
-
+    // Audio/visual effects
     public AudioSource walkingSound;
     public ParticleSystem hitEffect;
     public AudioSource groanSound;
     public AudioSource gruntSound;
+    public GameObject dropItemPrefab;
+
+    // State management
+    private enum EnemyState { Pathing, Attacking, Dead }
+    private EnemyState currentState = EnemyState.Pathing;
+    private bool attackToggle = false;
     private float groanTimer = 0f;
     private float nextGroanTime = 0f;
     private string currentAnimTrigger = "";
-
-    public float destroyDelay = 2f;
-    public float attackRange = 10f; // Distance at which enemy will stop and shoot
-    public float minDistance = 5f; // Minimum distance to maintain from player
-
-    private Gun currentGun;
     private float fireRateDelta;
 
     void Start()
@@ -85,6 +84,9 @@ public class RangedEnemyMoving : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles taking damage from player attacks
+    /// </summary>
     public void TakeDamage(int damage, bool knockback)
     {
         currentHealth -= damage;
@@ -101,6 +103,9 @@ public class RangedEnemyMoving : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets animation trigger with proper reset handling
+    /// </summary>
     private void SetAnimationTrigger(string triggerName)
     {
         if (currentAnimTrigger == triggerName) return;
@@ -110,6 +115,9 @@ public class RangedEnemyMoving : MonoBehaviour
         playerAnimator?.PlayAnimation(triggerName);
     }
 
+    /// <summary>
+    /// Handles enemy death sequence
+    /// </summary>
     private void Die()
     {
         currentState = EnemyState.Dead;
@@ -126,6 +134,9 @@ public class RangedEnemyMoving : MonoBehaviour
         Destroy(gameObject, destroyDelay);
     }
 
+    /// <summary>
+    /// Handles periodic groan sound playback
+    /// </summary>
     private void HandleGroans()
     {
         groanTimer += Time.deltaTime;
@@ -137,6 +148,9 @@ public class RangedEnemyMoving : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles pathfinding and movement toward player
+    /// </summary>
     private void HandlePathing()
     {
         float distance = Vector3.Distance(transform.position, player.position);
@@ -173,6 +187,9 @@ public class RangedEnemyMoving : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles shooting behavior when in attack range
+    /// </summary>
     private void HandleAttacking()
     {
         // Face the player while attacking
@@ -198,18 +215,25 @@ public class RangedEnemyMoving : MonoBehaviour
         }
     }
 
-    // Called by Animation Event if you have shooting animations
+    /// <summary>
+    /// Animation event method for shooting projectile
+    /// </summary>
     public void ShootProjectile()
     {
         currentGun.Fire();
     }
 
-    // Called by Animation Event when attack ends
+    /// <summary>
+    /// Animation event method when attack ends
+    /// </summary>
     public void EndAttack()
     {
         StartCoroutine(AttackCooldown());
     }
 
+    /// <summary>
+    /// Handles attack cooldown and state transition
+    /// </summary>
     private IEnumerator AttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);

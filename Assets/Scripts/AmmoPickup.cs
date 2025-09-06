@@ -2,26 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles ammo pickup behavior including floating animation and player collection
+/// </summary>
 public class AmmoPickup : MonoBehaviour
 {
-    public float floatStrength = 0.5f;
-    public float floatSpeed = 2f;
+    public float floatStrength = 0.5f;    // Height of floating animation
+    public float floatSpeed = 2f;         // Speed of floating animation
 
-    private Vector3 startPos;
+    private Vector3 startPos;             // Original position reference
 
-    public AudioClip pickupSound;
+    public AudioClip pickupSound;         // Sound played when collected
+    public string ammoType;               // Type of ammo (Multiple, Smite, Knockback)
 
-    public string ammoType;
     void Start()
     {
         startPos = transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        //Float up and down
+        // Floating up/down animation using sine wave
         float newY = startPos.y + Mathf.Sin(Time.time * floatSpeed) * floatStrength;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
@@ -33,6 +34,7 @@ public class AmmoPickup : MonoBehaviour
             PlayerMotor playerMotor = other.GetComponent<PlayerMotor>();
             if (playerMotor != null)
             {
+                // Grant appropriate ammo type based on pickup
                 switch (ammoType)
                 {
                     case "Multiple":
@@ -47,6 +49,7 @@ public class AmmoPickup : MonoBehaviour
                 }
             }
 
+            // Play pickup sound if available
             if (pickupSound)
                 SoundManager.Instance.PlaySound(SoundManager.Instance.effects[7]);
 
